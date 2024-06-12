@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+//round icons
+@import url("https://fonts.googleapis.com/css?family=Material+Icons+Round");
+
+
+/* symbols rounded */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded');
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+button.mat-primary {
+    background-color: green;
+}

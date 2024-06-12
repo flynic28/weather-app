@@ -1,0 +1,56 @@
+<div
+  *ngIf="{
+    favorites: favorites$ | async,
+    currentConditions: currentConditions$ | async,
+    dailyForcast: dailyForcast$ | async,
+    hourlyForcast: hourlyForcast$ | async,
+    location: location$ | async,
+    isFavorite: isFavorite$ | async
+  } as vm"
+  class="container"
+>
+  <mat-card class="full-width">
+    <mat-card-header>
+        <mat-card-title>{{ vm.location?.LocalizedName }}, {{ vm.location?.AdministrativeArea?.LocalizedName }} 
+            <button *ngIf="vm.location" mat-icon-button aria-label="Home button" [color]="vm.isFavorite ? 'primary' : ''" (click)="toggleFavorite(vm.isFavorite, vm.location)">
+                <mat-icon>star</mat-icon>
+            </button>
+        </mat-card-title>
+        <mat-card-subtitle>{{ vm.location?.Country?.LocalizedName }}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Current Conditions</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-current-conditions
+        *ngIf="vm.currentConditions"
+        [currentConditions]="vm.currentConditions"
+      ></app-current-conditions>
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Hourly Forcast</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <app-hourly-forcast
+        *ngIf="vm.hourlyForcast"
+        [hourlyForcast]="vm.hourlyForcast"
+      ></app-hourly-forcast>
+    </mat-card-content>
+  </mat-card>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Daily Forcast</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-daily-forcast
+        *ngIf="vm.dailyForcast"
+        [dailyForcast]="vm.dailyForcast"
+      ></app-daily-forcast>
+    </mat-card-content>
+  </mat-card>
+</div>

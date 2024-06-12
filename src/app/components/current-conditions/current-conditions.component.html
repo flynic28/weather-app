@@ -1,0 +1,14 @@
+<ng-container *ngIf="currentConditions; else noData">
+    <div class="container">
+        <div>
+            <img [src]="'https://developer.accuweather.com/sites/default/files/' + (currentConditions[0].WeatherIcon < 10 ? '0' + currentConditions[0].WeatherIcon : currentConditions[0].WeatherIcon) + '-s.png'" />
+            <span>{{ currentConditions[0].WeatherText }}</span>
+        </div>
+        <h2>
+            {{currentConditions[0].Temperature.Imperial.Value}} {{currentConditions[0].Temperature.Imperial.Unit}}
+        </h2>
+    </div>
+</ng-container>
+<ng-template #noData>
+    <div>No Data</div>
+</ng-template>

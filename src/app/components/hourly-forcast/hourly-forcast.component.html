@@ -1,0 +1,34 @@
+<ng-container *ngIf="hourlyForcast; else noData">
+    <table>
+        <thead>
+            <tr>
+                <td>
+                    Time
+                </td>
+                <td>
+                    Weather
+                </td>
+                <td>
+                    Temperature
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let hour of hourlyForcast">
+                <td>
+                    {{hour.DateTime | date: 'short' }}
+                </td>
+                <td>
+                    <img [src]="'https://developer.accuweather.com/sites/default/files/' + (hour.WeatherIcon < 10 ? '0' + hour.WeatherIcon : hour.WeatherIcon) + '-s.png'" />
+                    <span>{{ hour.IconPhrase }}</span>
+                </td>
+                <td>
+                    {{hour.Temperature.Value}} {{hour.Temperature.Unit}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</ng-container>
+<ng-template #noData>
+    <div>No Data</div>
+</ng-template>

@@ -1,0 +1,6 @@
+<ng-container *ngIf="{
+    favorites: favorites$ | async
+} as vm">
+
+<div>{{ vm.favorites | json }}</div>
+</ng-container>

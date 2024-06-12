@@ -1,0 +1,40 @@
+<ng-container *ngIf="dailyForcast; else noData">
+    <table>
+        <thead>
+            <tr>
+                <td>
+                    Day
+                </td>
+                <td>
+                    Weather
+                </td>
+                <td>
+                    Low
+                </td>
+                <td>
+                    High
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let day of dailyForcast.DailyForecasts">
+                <td>
+                    {{day.Date | date }}
+                </td>
+                <td>
+                    <img [src]="'https://developer.accuweather.com/sites/default/files/' + (day.Day.Icon < 10 ? '0' + day.Day.Icon : day.Day.Icon) + '-s.png'" />
+                    <span>{{ day.Day.IconPhrase }}</span>
+                </td>
+                <td>
+                    {{day.Temperature.Minimum.Value}} {{day.Temperature.Minimum.Unit}}
+                </td>
+                <td>
+                    {{day.Temperature.Maximum.Value}} {{day.Temperature.Maximum.Unit}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</ng-container>
+<ng-template #noData>
+    <div>No Data</div>
+</ng-template>
