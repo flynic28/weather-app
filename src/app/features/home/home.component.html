@@ -1,6 +1,19 @@
-<ng-container *ngIf="{
+<ng-container
+  *ngIf="{
     favorites: favorites$ | async
-} as vm">
-
-<div>{{ vm.favorites | json }}</div>
+  } as vm"
+>
+  <div *ngIf="vm.favorites" class="container">
+    <mat-card class="full-width" *ngFor="let favorite of vm.favorites">
+      <mat-card-header>
+        <mat-card-title>{{ favorite.friendlyName }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <app-daily-forcast
+          *ngIf="favorite.DailyForecasts"
+          [dailyForcast]="favorite"
+        ></app-daily-forcast>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </ng-container>

@@ -1,4 +1,4 @@
-export const API_KEY = 'KhTvvkA6KYIiqkdb5MgAaoJBXbo8SCMM';
+export const API_KEY = 'Yrrq6h11nXy4yyzgpvQk6DMFr2ypGh7L';
 export const API_BASE = 'http://dataservice.accuweather.com';
 
 export const FORCASTS_API = 'forecasts/v1';
