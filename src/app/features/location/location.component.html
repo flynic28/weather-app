@@ -5,14 +5,15 @@
     dailyForcast: dailyForcast$ | async,
     hourlyForcast: hourlyForcast$ | async,
     location: location$ | async,
-    isFavorite: isFavorite$ | async
+    isFavorite: isFavorite$ | async,
+    isFavoriteReadonly: isFavoriteReadonly$ | async
   } as vm"
   class="container"
 >
   <mat-card class="full-width">
     <mat-card-header>
         <mat-card-title>{{ vm.location?.LocalizedName }}, {{ vm.location?.AdministrativeArea?.LocalizedName }} 
-            <button *ngIf="vm.location" mat-icon-button aria-label="Home button" [color]="vm.isFavorite ? 'primary' : ''" (click)="toggleFavorite(vm.isFavorite, vm.location)">
+            <button *ngIf="vm.location" mat-icon-button aria-label="Home button" [disabled]="vm.isFavoriteReadonly" [color]="vm.isFavorite ? 'primary' : ''" (click)="toggleFavorite(vm.isFavorite, vm.location)">
                 <mat-icon>star</mat-icon>
             </button>
         </mat-card-title>

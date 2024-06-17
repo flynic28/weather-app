@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import { API_BASE, DEFAULT_QUERY_PARAMS, FORCASTS_API, LOCATION_API } from './api.constant';
+import { NotificationService } from './notification.service';
 
 export interface Location {
   Version:                number;
@@ -81,18 +82,32 @@ export interface TimeZone {
 export class LocationService {
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private notificationService: NotificationService
   ) { }
 
   public getLocations(zipCode: string) {
     return this.httpClient.get(`${API_BASE}/${LOCATION_API}/postalcodes/search${DEFAULT_QUERY_PARAMS}&q=${zipCode}`).pipe(
-      map((res) => res as any[])
+      map((res) => res as any[]),
+      map((data: any[]) => {
+        if (data.length === 0) throw new Error('No Locations Found');
+      }),
+      catchError((error: any, caught: Observable<any>): Observable<any> => {
+        this.notificationService.openErrorSnackbar(error.message)
+        return of();
+      })
     )
   }
 
   public getLocationInfo(locationKey: string) {
     return this.httpClient.get(`${API_BASE}/${LOCATION_API}/${locationKey}${DEFAULT_QUERY_PARAMS}`).pipe(
-      map((res) => res as Location)
+      map((res) => {
+        return res as Location
+      }),
+      catchError((error: any, caught: Observable<any>): Observable<any> => {
+        this.notificationService.openErrorSnackbar(error.message)
+        return of();
+      })
     )
   }
 

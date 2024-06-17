@@ -1,12 +1,17 @@
 <ng-container
   *ngIf="{
-    favorites: favorites$ | async
+    favorites: favorites$ | async,
+    isMobile: isMobile$ | async
   } as vm"
 >
   <div *ngIf="vm.favorites" class="container">
     <mat-card class="full-width" *ngFor="let favorite of vm.favorites">
       <mat-card-header>
-        <mat-card-title>{{ favorite.friendlyName }}</mat-card-title>
+        <mat-card-title>{{ favorite.friendlyName }}
+          <button *ngIf="!favorite.readonly" mat-icon-button aria-label="favorite button" [color]="'primary'" (click)="removeFavorite(favorite.locationKey)">
+            <mat-icon>star</mat-icon>
+          </button>
+        </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <app-daily-forcast

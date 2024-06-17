@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_BASE, CURRENT_CONDITIONS_API, DEFAULT_QUERY_PARAMS, FORCASTS_API } from './api.constant';
-import { map } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
+import { NotificationService } from './notification.service';
 
 export interface CurrentCondition {
   LocalObservationDateTime: Date;
@@ -108,24 +109,37 @@ export enum Unit {
 })
 export class WeatherService {
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private notificationService: NotificationService
   ) { }
 
   public getDailyForcast(dayCount: '1' | '5' | '10', locationKey: string) {
     return this.httpClient.get(`${API_BASE}/${FORCASTS_API}/daily/${dayCount}day/${locationKey}${DEFAULT_QUERY_PARAMS}`).pipe(
-      map((res) => res as DailyForcast)
+      map((res) => res as DailyForcast),
+      catchError((error: any, caught: Observable<any>): Observable<any> => {
+        this.notificationService.openErrorSnackbar(error.message)
+        return of();
+      })
     )
   }
 
   public getHourlyForcast(hourCount: '1' | '12' | '24' | '120' | '72', locationKey: string) {
     return this.httpClient.get(`${API_BASE}/${FORCASTS_API}/hourly/${hourCount}hour/${locationKey}${DEFAULT_QUERY_PARAMS}`).pipe(
-      map((res) => res as HourlyForcast[])
+      map((res) => res as HourlyForcast[]),
+      catchError((error: any, caught: Observable<any>): Observable<any> => {
+        this.notificationService.openErrorSnackbar(error.message)
+        return of();
+      })
     )
   }
 
   public getCurrentConditions(locationKey: string) {
     return this.httpClient.get(`${API_BASE}/${CURRENT_CONDITIONS_API}/${locationKey}${DEFAULT_QUERY_PARAMS}`).pipe(
-      map((res) => res as CurrentCondition[])
+      map((res) => res as CurrentCondition[]),
+      catchError((error: any, caught: Observable<any>): Observable<any> => {
+        this.notificationService.openErrorSnackbar(error.message)
+        return of();
+      })
     )
   }
 

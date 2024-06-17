@@ -38,6 +38,7 @@ export class LocationComponent {
 
   favorites$: Observable<Favorite[]> = new Observable();
   isFavorite$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  isFavoriteReadonly$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
     private route: ActivatedRoute,
@@ -51,8 +52,9 @@ export class LocationComponent {
         this.favorites$ = this.favoriteService.favorites$.pipe(
           takeUntil(this.destroy$),
           tap((_favorites) => {
-            console.log(_favorites)
-            this.isFavorite$.next(!!_favorites.find((_favorite) => _favorite.locationKey === data))
+            const _thisFav = _favorites.find((_favorite) => _favorite.locationKey === data)
+            this.isFavorite$.next(!!_thisFav)
+            this.isFavoriteReadonly$.next(!!_thisFav?.readonly)
           })
         )    
         this.currentConditions$ = this.weatherService.getCurrentConditions(data)

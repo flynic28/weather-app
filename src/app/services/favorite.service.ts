@@ -3,7 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 
 export interface Favorite {
   locationKey: string,
-  friendlyName: string
+  friendlyName: string,
+  readonly?: boolean
 }
 
 @Injectable({
@@ -11,7 +12,13 @@ export interface Favorite {
 })
 export class FavoriteService {
 
-  favoritesSub = new BehaviorSubject<Favorite[]>([]);
+  favoritesSub = new BehaviorSubject<Favorite[]>([
+    {
+      locationKey: "7836_PC",
+      friendlyName: "Philadelphia",
+      readonly: true
+    }
+  ]);
   favorites$ = this.favoritesSub.asObservable()
 
   constructor() { }

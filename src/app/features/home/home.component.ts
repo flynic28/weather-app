@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { Favorite, FavoriteService } from '../../services/favorite.service';
 import { CommonModule } from '@angular/common';
-import { Observable, Subject,  forkJoin, map,  mergeMap, takeUntil } from 'rxjs';
+import { Observable, Subject,  forkJoin, map,  mergeMap, takeUntil, tap } from 'rxjs';
 import { DailyForcast, WeatherService } from '../../services/weather.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { DailyForcastComponent } from '../../components/daily-forcast/daily-forcast.component';
+import { MatButtonModule } from '@angular/material/button';
+import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +16,7 @@ import { DailyForcastComponent } from '../../components/daily-forcast/daily-forc
     CommonModule,
     MatCardModule,
     MatIconModule,
+    MatButtonModule,
     DailyForcastComponent
   ],
   templateUrl: './home.component.html',
@@ -24,10 +27,14 @@ export class HomeComponent {
   destroy$ = new Subject();
 
   favorites$: Observable<Array<DailyForcast | any>>
+  isMobile$ = this.layoutService.isMobile().pipe(
+    tap((data) => console.log('isMobile', data))
+  )
 
   constructor(
     public favoriteService: FavoriteService,
-    public weatherService: WeatherService
+    public weatherService: WeatherService,
+    private layoutService: LayoutService
   ) {
     this.favorites$ = this.favoriteService.favorites$.pipe(
       takeUntil(this.destroy$),
@@ -39,5 +46,9 @@ export class HomeComponent {
         )
       )
     )    
+  }
+
+  removeFavorite(locationKey: string) {
+    this.favoriteService.removeFavorite(locationKey)
   }
 }
