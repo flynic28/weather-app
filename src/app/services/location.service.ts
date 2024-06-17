@@ -91,6 +91,7 @@ export class LocationService {
       map((res) => res as any[]),
       map((data: any[]) => {
         if (data.length === 0) throw new Error('No Locations Found');
+        return data
       }),
       catchError((error: any, caught: Observable<any>): Observable<any> => {
         this.notificationService.openErrorSnackbar(error.message)

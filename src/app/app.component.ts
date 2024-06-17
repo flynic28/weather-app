@@ -48,6 +48,7 @@ export class AppComponent {
     return this.locationService.getLocations(formValue.searchedZipCode).pipe(
       take(1)
     ).subscribe((res) => {
+      console.log(res)
       if (res.length) this.router.navigateByUrl(`/location/${res[0].Key}`)
     })
   }
